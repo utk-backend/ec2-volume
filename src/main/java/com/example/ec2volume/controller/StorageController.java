@@ -4,6 +4,7 @@ package com.example.ec2volume.controller;
 import com.example.ec2volume.dto.FileDetails;
 import com.example.ec2volume.enums.SupportedFileSystems;
 import com.example.ec2volume.service.FileService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Files;
 
 @RestController
+@Slf4j
 @RequestMapping("/api")
 public class StorageController {
 
@@ -47,6 +49,8 @@ public class StorageController {
                     HttpStatus.BAD_REQUEST, e.getMessage());
 
         } catch (IOException e) {
+            log.error("Failed to store file on filesystem: {}", filesystem, e);
+
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Failed to store file");
